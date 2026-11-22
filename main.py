@@ -1,15 +1,18 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow
-from ui_mainwindow import Ui_MainWindow
 
+from Presenters.MainWindowPresenter import MainWindowPresenter
+from Repositories.ItemRepository import ItemRepository
 from Services import database
+from Services.database import get_connection
+from Views.MainWindowView import MainWindow
+
 
 try:
     with database.get_connection() as conn:
         result = conn.execute(
-            "SELECT current_database(), current_user"
-        ).fetchone()
+            "SELECT table_schema, table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema') ORDER BY table_schema, table_name" ).fetchone()
 
         print("Connected successfully!")
         print("Database:", result[0])
@@ -19,31 +22,32 @@ except Exception as error:
     print("Connection failed:", error)
 
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
-        self.ui.pushButton.clicked.connect(
-            self.save_contact
-        )
-
-    def save_contact(self):
 
 
-        name = self.ui.plainTextEdit.toPlainText()
-        email = self.ui.plainTextEdit_2.toPlainText()
 
-        print(f"Saving: {name}, {email}")
+def main():
+    app = QApplication(sys.argv)
 
-        # Later, insert into PostgreSQL here
+    main_view = MainWindow()
+
+    repository = ItemRepository(get_connection)
+
+    presenter = MainWindowPresenter(main_view, repository)
+
+    presenter.load_items()
+
+    main_view.show()
+
+    return app.exec()
+
+if __name__ == "__main__":
+    sys.exit(main())
 
 
-app = QApplication(sys.argv)
+# main window -> table items stored already
+# --> item name | item code | quantity | button(remove) | button (update)
 
-window = MainWindow()
-window.show()
-
-sys.exit(app.exec())
+# button -> add item
+# --> opens interface to add item ( field to paste barcode | quantity (if barcode is correct ) ) | item name | button add item
+#
+# search field (filters table for results )
