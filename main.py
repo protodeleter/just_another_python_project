@@ -1,6 +1,6 @@
 import sys
 
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication
 
 from Presenters.MainWindowPresenter import MainWindowPresenter
 from Repositories.ItemRepository import ItemRepository
@@ -27,17 +27,11 @@ except Exception as error:
 
 def main():
     app = QApplication(sys.argv)
-
     main_view = MainWindow()
-
     repository = ItemRepository(get_connection)
-
     presenter = MainWindowPresenter(main_view, repository)
-
     presenter.load_items()
-
     main_view.show()
-
     return app.exec()
 
 if __name__ == "__main__":

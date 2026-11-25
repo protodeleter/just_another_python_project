@@ -1,15 +1,11 @@
 from logging import log
 
 from PySide6.QtCore import Signal, Qt
-from PySide6.QtGui import QStandardItem
 from PySide6.QtWidgets import (
     QMainWindow,
-    QWidget,
-    QVBoxLayout,
     QPushButton,
-    QStackedWidget, QTableWidget, QTableWidgetItem, QDialog,
+    QTableWidgetItem, QDialog,
 )
-from dialog import Ui_Dialog
 from ui_mainwindow import Ui_MainWindow
 
 
@@ -25,17 +21,13 @@ class MainWindow(QMainWindow):
 
 
 
-    def show_popup(self):
-        dialog = QDialog(self)
 
-        ui = Ui_Dialog()
-        ui.setupUi(dialog)
 
-        dialog.exec()
+
+
 
     def render_table(self, data):
         table = self.ui.tableWidget
-
         table.setColumnCount(5)
         table.setRowCount(len(data))
         table.setHorizontalHeaderLabels(["Title", "Barcode", "Created", "Updated", "Action"])
@@ -54,5 +46,3 @@ class MainWindow(QMainWindow):
                         col_index,
                         QTableWidgetItem(str(value))
                     )
-
-
