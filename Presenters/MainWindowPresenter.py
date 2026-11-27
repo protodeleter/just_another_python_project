@@ -1,5 +1,6 @@
 
 from Views.DialogView import DialogView
+from Presenters.DialogPresenter import DialogPresenter
 
 class MainWindowPresenter:
     def __init__(self, view, repository):
@@ -20,6 +21,7 @@ class MainWindowPresenter:
 
     def on_click(self):
         dialog = DialogView(self.view)
+        presenter = DialogPresenter(dialog)
         dialog.exec()
 
     def show_popup(self):

@@ -19,13 +19,6 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("My Application")
 
-
-
-
-
-
-
-
     def render_table(self, data):
         table = self.ui.tableWidget
         table.setColumnCount(5)
