@@ -21,7 +21,7 @@ class MainWindowPresenter:
 
     def on_click(self):
         dialog = DialogView(self.view)
-        presenter = DialogPresenter(dialog)
+        presenter = DialogPresenter(dialog,self.repository)
         dialog.exec()
 
     def show_popup(self):
